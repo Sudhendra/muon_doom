@@ -59,13 +59,7 @@ muon_doom/
 source venv/bin/activate
 
 # Train with Adam optimizer
-PYTHONPATH=. python muon_doom/training/train.py \
-    --optimizer adam \
-    --learning-rate 3e-4 \
-    --total-timesteps 1000000 \
-    --num-envs 8 \
-    --batch-size 2048 \
-    --bptt-horizon 16
+PYTHONPATH=. python muon_doom/training/train.py --optimizer adam --learning-rate 3e-4 --total-timesteps 1000000 --num-envs 8 --batch-size 2048 --bptt-horizon 16
 ```
 
 ### Train with Muon Optimizer
@@ -116,6 +110,14 @@ Misc:
 ```
 
 ## Implementation Details
+
+### Multiprocessing on macOS
+
+This project uses PufferLib's `Multiprocessing` backend which relies on Python's `multiprocessing` module. On macOS (and Windows), the default start method is `spawn`. To ensure stability:
+
+1. **Entry Point Guard**: The training script is protected by `if __name__ == "__main__":`. This is mandatory for `spawn` to prevent recursive process spawning.
+2. **Importable Env Creator**: We use a top-level function `make_puffer_env` defined in `muon_doom.envs.puffer_wrapper` instead of lambdas/closures, ensuring it is pickleable.
+3. **Shared Memory**: PufferLib handles shared memory efficienty. If you see warnings about "redirects not supported", these are harmless logs from PyTorch's elastic launch on macOS.
 
 ### Environment Pipeline
 

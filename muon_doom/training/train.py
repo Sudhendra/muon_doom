@@ -56,12 +56,21 @@ def train(config):
     np.random.seed(config["seed"])
 
     # Create vectorized environments
+    env_kwargs = {}
+    if config["render"]:
+        config["num_envs"] = 1
+        config["num_workers"] = 1
+        config["backend"] = "Serial"
+        env_kwargs["render_mode"] = "human"
+        print("Rendering enabled: Forcing num_envs=1, num_workers=1, backend=Serial")
+
     print(f"Creating {config['num_envs']} environments...")
     vecenv = pufferlib.vector.make(
         make_puffer_env,
         backend=config["backend"],
         num_envs=config["num_envs"],
         num_workers=config["num_workers"],
+        env_kwargs=env_kwargs,
     )
     print(f"✓ Environments created")
     print(f"  Observation space: {vecenv.observation_space}")
@@ -183,6 +192,7 @@ def main():
         choices=["Serial", "Multiprocessing"],
         help="Vectorization backend",
     )
+    parser.add_argument("--render", action="store_true", help="Render the environment")
 
     # Training args
     parser.add_argument(
