@@ -205,3 +205,10 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# additional files
+.vscode/
+venv
+.env
+Plan.md
+IMPLEMENTATION_STATUS.md

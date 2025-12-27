@@ -1,0 +1,23 @@
+# Core RL dependencies
+pufferlib>=3.0.0
+gymnasium>=0.29.0
+numpy>=1.24.0
+torch>=2.0.0
+
+# ViZDoom
+vizdoom>=1.2.0
+
+# Muon optimizer (PufferLib built-in dependency)
+heavyball>=2.1.0
+
+# Image processing
+opencv-python>=4.8.0
+Pillow>=10.0.0
+
+# Logging (optional)
+wandb>=0.15.0
+tensorboard>=2.14.0
+
+# Utilities
+psutil>=5.9.0
+tqdm>=4.66.0
